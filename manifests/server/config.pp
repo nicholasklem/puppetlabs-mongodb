@@ -72,12 +72,15 @@ class mongodb::server::config {
       notify  => Class['mongodb::server::service']
     }
 
-    file { $dbpath:
-      ensure  => directory,
-      mode    => '0755',
-      owner   => $user,
-      group   => $group,
-      require => File[$config]
+    # support $dbpath being on a dedicated filesystem, premade
+    if !defined(File[$dbpath]){
+      file { $dbpath:
+        ensure  => directory,
+        mode    => '0755',
+        owner   => $user,
+        group   => $group,
+        require => File[$config]
+      }
     }
   } else {
     file { $dbpath:

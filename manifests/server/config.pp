@@ -85,7 +85,7 @@ class mongodb::server::config {
       exec { "chown $user:$group $dbpath":
         path    => "/bin:/usr/bin",
         command => "chown $user:$group $dbpath",
-        unless  => "[ stat -c %U $dbpath == $user ] && [ stat -c %G $dbpath == $group ]",
+        unless  => "[ $(stat -c %U $dbpath) == $user ] && [ $(stat -c %G $dbpath) == $group ]",
       }
     }
   } else {
